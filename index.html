@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday My Love Shehnaz ❤️</title>
+  <!-- Google Fonts & Canvas Confetti -->
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&family=Great+Vibes&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: radial-gradient(circle, #ffe6eb 0%, #ffb6c1 100%);
+      font-family: 'Poppins', sans-serif;
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    /* Floating Hearts Background */
+    .heart-bg {
+      position: fixed;
+      top: -10vh;
+      font-size: 20px;
+      color: rgba(255, 77, 109, 0.4);
+      animation: floatDown 7s linear infinite;
+      z-index: 0;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    @keyframes floatDown {
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+    }
+
+    /* Landing / Entry Screen */
+    #entry-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #ff758c, #ff7eb3);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+      transition: opacity 1s ease, visibility 1s ease;
+      text-align: center;
+      padding: 20px;
+    }
+
+    #entry-overlay h1 {
+      font-family: 'Great Vibes', cursive;
+      font-size: 3.5rem;
+      color: #fff;
+      text-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+      margin-bottom: 20px;
+      animation: pulse 1.8s infinite;
+    }
+
+    #entry-overlay p {
+      color: #fff;
+      font-size: 1.1rem;
+      margin-bottom: 30px;
+    }
+
+    .start-btn {
+      padding: 14px 35px;
+      font-size: 1.2rem;
+      border: none;
+      background: #fff;
+      color: #ff4d6d;
+      font-weight: 600;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+      transition: all 0.3s ease;
+    }
+
+    .start-btn:hover {
+      transform: scale(1.08);
+      background: #fff0f3;
+      box-shadow: 0 10px 25px rgba(255, 77, 109, 0.4);
+    }
+
+    /* Main Container */
+    .container {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      max-width: 650px;
+      padding: 30px 20px;
+      z-index: 10;
+      animation: fadeIn 1.5s ease-in-out;
+    }
+
+    .main-title {
+      font-family: 'Great Vibes', cursive;
+      font-size: 3.8rem;
+      color: #d6336c;
+      text-align: center;
+      margin-bottom: 10px;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+    }
+
+    /* Photo Frame */
+    .photo-container {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 5px solid #fff;
+      box-shadow: 0 10px 25px rgba(214, 51, 108, 0.3);
+      margin: 15px 0 25px 0;
+      animation: bounce 2s infinite alternate;
+    }
+
+    .photo-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Envelope & Letter Wrapper */
+    .envelope-wrapper {
+      position: relative;
+      cursor: pointer;
+      margin-top: 20px;
+      width: 300px;
+      height: 200px;
+      background-color: #ff4d6d;
+      border-bottom-left-radius: 12px;
+      border-bottom-right-radius: 12px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+      transition: transform 0.3s ease;
+    }
+
+    .envelope-wrapper:hover {
+      transform: scale(1.02);
+    }
+
+    /* Flap */
+    .envelope-flap {
+      position: absolute;
+      top: 0;
+      left: 0;
+      border-left: 150px solid transparent;
+      border-right: 150px solid transparent;
+      border-top: 110px solid #e0245e;
+      transform-origin: top;
+      transition: transform 0.6s ease;
+      z-index: 5;
+    }
+
+    .envelope-pocket {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0;
+      height: 0;
+      border-left: 150px solid #ff758c;
+      border-right: 150px solid #ff758c;
+      border-bottom: 100px solid #d6336c;
+      border-top: 100px solid transparent;
+      border-bottom-left-radius: 12px;
+      border-bottom-right-radius: 12px;
+      z-index: 4;
+    }
+
+    .letter-preview-hint {
+      position: absolute;
+      bottom: -35px;
+      width: 100%;
+      text-align: center;
+      font-size: 0.95rem;
+      color: #c2255c;
+      font-weight: 600;
+      animation: pulse 1.5s infinite;
+    }
+
+    /* Actual Letter Card */
+    .letter-card {
+      position: absolute;
+      bottom: 10px;
+      left: 15px;
+      width: 270px;
+      max-height: 170px;
+      background: #fffdfa;
+      border-radius: 8px;
+      padding: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      z-index: 3;
+      overflow: hidden;
+      opacity: 0.9;
+    }
+
+    /* Letter Open State */
+    .envelope-wrapper.open .envelope-flap {
+      transform: rotateX(180deg);
+      z-index: 1;
+    }
+
+    .envelope-wrapper.open .letter-card {
+      position: relative;
+      width: 90vw;
+      max-width: 520px;
+      max-height: none;
+      height: auto;
+      transform: translateY(-220px);
+      z-index: 100;
+      opacity: 1;
+      padding: 30px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+      border: 2px solid #ffe3e8;
+    }
+
+    .envelope-wrapper.open {
+      margin-bottom: 300px;
+    }
+
+    /* Letter Text Styling */
+    .letter-title {
+      font-family: 'Great Vibes', cursive;
+      font-size: 2.3rem;
+      color: #d6336c;
+      text-align: center;
+      margin-bottom: 15px;
+      border-bottom: 1px dashed #ffa8ba;
+      padding-bottom: 10px;
+    }
+
+    .letter-body {
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: #495057;
+      text-align: left;
+      white-space: pre-line;
+      font-weight: 400;
+    }
+
+    .letter-footer {
+      margin-top: 25px;
+      font-family: 'Great Vibes', cursive;
+      font-size: 2.2rem;
+      color: #e0245e;
+      text-align: center;
+    }
+
+    /* Keyframes */
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    @keyframes bounce {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-10px); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 480px) {
+      .main-title { font-size: 2.9rem; }
+      .envelope-wrapper.open .letter-card { width: 88vw; padding: 20px; }
+      .letter-body { font-size: 0.95rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Entry Animation Screen -->
+  <div id="entry-overlay">
+    <h1>Special Surprise for You 💖</h1>
+    <p>A little piece of my heart just for today...</p>
+    <button class="start-btn" onclick="startCelebration()">Open Surprise ✨</button>
+  </div>
+
+  <!-- Background Music (Audio) -->
+  <audio id="bg-music" loop>
+    <!-- Background music link -->
+    <source src="https://cdn.pixabay.com/download/audio/2022/10/14/audio_9939f792cb.mp3?filename=happy-birthday-to-you-piano-version-124021.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Main Birthday Content -->
+  <div class="container" id="main-content">
+    <h1 class="main-title">Happy Birthday Shehnaz! 🎂</h1>
+
+    <!-- Photo Frame (Local image: replace profile.jpg with your photo) -->
+    <div class="photo-container">
+      <img src="profile.jpg" alt="Pyaari Shehnaz" id="profile-img" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=600&auto=format&fit=crop'">
+    </div>
+
+    <!-- Envelope with Heart-touching Letter -->
+    <div class="envelope-wrapper" id="envelope" onclick="toggleLetter()">
+      <div class="envelope-flap"></div>
+      <div class="envelope-pocket"></div>
+      
+      <!-- The Letter Inside -->
+      <div class="letter-card" id="letter">
+        <div class="letter-title">Dear my pyaari Shehnaz ❤️</div>
+        <div class="letter-body">
+Sabse phele tumhe Happy Birthday! 🎂✨
+
+Aaj ke din mein tumhare pass nahi hoon, par yakeen karo tum hi mere dil ke sabse karib ho aur tum hi meri pyaari Shehnaz ho. 
+
+Mein aaj ke din yahi dua karta hu ki tum hamesha khush raho, tumhare aakhon mein kabhi bhi aashu na aaye, aur tum hamesha aise hi muskurati raho. Har muskurahat tumhari mere dil ko sukoon deti hai. ❤️
+
+Tum sirf mere dil mein hi nahi, tum mujh mein basi ho... har lamha, har jagah jab mein tumhe apne pass feel karta hoon toh mujhe ek alag hi sukoon milta hai. 
+
+Mein bhagwaan aur Allah se yahi dua karta hu ki tum apni life mein woh sab kuch haasil kar sako jo tum chahti ho, aur tum bohot saari tarakki karo aur kamiyabi pao. 🌟
+
+Mein tumhe ye sachha wada karta hu ki mein kuch saal mein tumhare pass aa jaunga. Tab hum dono milkar tumhara birthday celebrate karenge, ghumenge aur dher saari yaadein banayenge. Tum jo bologi mein hamesha woh sab karne ki koshish karunga.
+
+I love you so much! 😘
+        </div>
+        <div class="letter-footer">
+          I love you meri pyaari shehnaz ❤️
+        </div>
+      </div>
+
+      <div class="letter-preview-hint">📩 Tap to open the letter</div>
+    </div>
+  </div>
+
+  <script>
+    // Create Floating Hearts
+    function createHearts() {
+      const symbols = ['❤️', '💖', '✨', '🌸', '💕'];
+      for (let i = 0; i < 25; i++) {
+        const heart = document.createElement('div');
+        heart.className = 'heart-bg';
+        heart.innerText = symbols[Math.floor(Math.random() * symbols.length)];
+        heart.style.left = Math.random() * 100 + 'vw';
+        heart.style.animationDuration = (Math.random() * 3 + 4) + 's';
+        heart.style.animationDelay = (Math.random() * 5) + 's';
+        document.body.appendChild(heart);
+      }
+    }
+    createHearts();
+
+    // Start celebration on entry button click
+    function startCelebration() {
+      const overlay = document.getElementById('entry-overlay');
+      const mainContent = document.getElementById('main-content');
+      const music = document.getElementById('bg-music');
+
+      music.play().catch(e => console.log("Audio permission needed: ", e));
+
+      overlay.style.opacity = '0';
+      setTimeout(() => {
+        overlay.style.display = 'none';
+        mainContent.style.display = 'flex';
+
+        confetti({
+          particleCount: 120,
+          spread: 80,
+          origin: { y: 0.6 }
+        });
+      }, 900);
+    }
+
+    let isOpen = false;
+    function toggleLetter() {
+      const envelope = document.getElementById('envelope');
+      isOpen = !isOpen;
+      
+      if (isOpen) {
+        envelope.classList.add('open');
+        confetti({
+          particleCount: 70,
+          spread: 60,
+          colors: ['#ff4d6d', '#ff758c', '#ffccd5']
+        });
+      } else {
+        envelope.classList.remove('open');
+      }
+    }
+  </script>
+</body>
+</html>
